@@ -91,7 +91,7 @@ Các loại action có thể dùng:
 - delete_project: Xoá dự án + task của nó (payload: projectId) — L3
 - reorder_projects: Sắp xếp lại thứ tự dự án (payload: orderedIds: ["p-...", "p-..."]) — L2
 - set_ui: Đổi giao diện ứng dụng (payload: accent?, density?, projectLayout?, copilotWidth?, showCopilot?, autoExecute?) — L2
-  - accent: "blue" | "violet" | "emerald" | "amber" | "rose"
+  - accent: "sage" | "forest" | "amber" | "rose"
   - density: "comfortable" | "compact"
   - projectLayout: "grid" | "list" | "board"
   - copilotWidth: số px (360–560)
@@ -169,7 +169,7 @@ export async function POST(request: NextRequest) {
     
     if (context?.ui) {
       fullSystemPrompt += `\n\n=== TRẠNG THÁI WEBSITE HIỆN TẠI (AI Builder) ===
-Tên app: ${context.ui.appName ?? 'TVQ Work'} | Layout dự án: ${context.ui.projectLayout ?? 'grid'} | Màu: ${context.ui.accent ?? 'blue'} | Theme: ${context.ui.theme ?? 'dark'} | Thiết kế tự do hiện tại: ${JSON.stringify(context.ui.design ?? {})}
+Tên app: ${context.ui.appName ?? 'TVQ Work Copilot'} | Layout dự án: ${context.ui.projectLayout ?? 'grid'} | Màu: ${context.ui.accent ?? 'sage'} | Theme: ${context.ui.theme ?? 'light'} | Thiết kế tự do hiện tại: ${JSON.stringify(context.ui.design ?? {})}
 Tính năng đang bật/tắt: ${JSON.stringify(context.ui.features ?? {})}
 Các mục tuỳ chỉnh đã thêm: ${(context.ui.sections ?? []).map((x) => `${x.id}: "${x.title}" @ ${x.view}`).join('; ') || 'chưa có'}`
     }

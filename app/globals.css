@@ -50,50 +50,131 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  /* Zinc remap — components are written dark-first with zinc utilities.
+     Mapping the scale through variables lets every zinc class (including
+     opacity and hover variants) follow the active theme automatically. */
+  --color-zinc-50: var(--zinc-50);
+  --color-zinc-100: var(--zinc-100);
+  --color-zinc-200: var(--zinc-200);
+  --color-zinc-300: var(--zinc-300);
+  --color-zinc-400: var(--zinc-400);
+  --color-zinc-500: var(--zinc-500);
+  --color-zinc-600: var(--zinc-600);
+  --color-zinc-700: var(--zinc-700);
+  --color-zinc-800: var(--zinc-800);
+  --color-zinc-900: var(--zinc-900);
+  --color-zinc-950: var(--zinc-950);
 }
 
-/* TVQ Work OS — dark-only operations theme.
-   Graphite base, steel-blue signal accent, amber for L3 approvals,
-   green for L1 safe operations. */
-:root,
-.dark {
+/* TVQ Work Copilot — natural, warm, human-centered.
+   Palette: Paper · Stone · Sage · Forest · Ink.
+   Light-first: calm paper surfaces, forest-green signal, ink text.
+   No neon, no purple-blue gradients, minimal chrome — AI appears in
+   context, not as decoration. */
+:root {
+  color-scheme: light;
+  --background: oklch(0.975 0.006 85); /* Paper */
+  --foreground: oklch(0.24 0.015 85); /* Ink */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.24 0.015 85);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.24 0.015 85);
+  --primary: oklch(0.38 0.07 152); /* Forest */
+  --primary-foreground: oklch(0.98 0.004 85);
+  --secondary: oklch(0.93 0.008 85); /* Stone tint */
+  --secondary-foreground: oklch(0.3 0.012 85);
+  --muted: oklch(0.94 0.006 85);
+  --muted-foreground: oklch(0.5 0.012 80); /* Stone */
+  --accent: oklch(0.92 0.02 148); /* Sage tint */
+  --accent-foreground: oklch(0.3 0.04 152);
+  --destructive: oklch(0.5 0.16 25);
+  --border: oklch(0.3 0.012 85 / 12%);
+  --input: oklch(0.3 0.012 85 / 10%);
+  --ring: oklch(0.38 0.07 152);
+  --signal: oklch(0.38 0.07 152); /* Forest */
+  --signal-foreground: oklch(0.98 0.004 85);
+  --safe: oklch(0.5 0.1 152); /* Sage deep */
+  --caution: oklch(0.6 0.12 75); /* Warm amber */
+  --chart-1: oklch(0.38 0.07 152);
+  --chart-2: oklch(0.62 0.08 148);
+  --chart-3: oklch(0.6 0.12 75);
+  --chart-4: oklch(0.5 0.16 25);
+  --chart-5: oklch(0.55 0.01 80);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.955 0.008 85); /* Deeper paper */
+  --sidebar-foreground: oklch(0.24 0.015 85);
+  --sidebar-primary: oklch(0.38 0.07 152);
+  --sidebar-primary-foreground: oklch(0.98 0.004 85);
+  --sidebar-accent: oklch(0.92 0.015 148);
+  --sidebar-accent-foreground: oklch(0.3 0.04 152);
+  --sidebar-border: oklch(0.3 0.012 85 / 10%);
+  --sidebar-ring: oklch(0.38 0.07 152);
+
+  /* Zinc scale on paper: dark text, light surfaces (inverted from dark-first authoring) */
+  --zinc-50: oklch(0.26 0.015 85);
+  --zinc-100: oklch(0.3 0.015 85);
+  --zinc-200: oklch(0.38 0.012 85);
+  --zinc-300: oklch(0.46 0.012 82);
+  --zinc-400: oklch(0.53 0.01 80);
+  --zinc-500: oklch(0.56 0.01 80);
+  --zinc-600: oklch(0.6 0.01 80);
+  --zinc-700: oklch(0.78 0.008 85);
+  --zinc-800: oklch(0.88 0.008 85);
+  --zinc-900: oklch(0.955 0.006 85);
+  --zinc-950: oklch(0.975 0.006 85);
+}
+
+/* Dark mode — warm ink instead of blue-graphite, sage signal */
+[data-theme='dark'] {
   color-scheme: dark;
-  --background: oklch(0.165 0.012 260);
-  --foreground: oklch(0.93 0.005 260);
-  --card: oklch(0.205 0.014 260);
-  --card-foreground: oklch(0.93 0.005 260);
-  --popover: oklch(0.22 0.014 260);
-  --popover-foreground: oklch(0.93 0.005 260);
-  --primary: oklch(0.72 0.13 232);
-  --primary-foreground: oklch(0.16 0.02 260);
-  --secondary: oklch(0.26 0.016 260);
-  --secondary-foreground: oklch(0.88 0.006 260);
-  --muted: oklch(0.24 0.014 260);
-  --muted-foreground: oklch(0.62 0.012 260);
-  --accent: oklch(0.27 0.02 260);
-  --accent-foreground: oklch(0.93 0.005 260);
+  --background: oklch(0.17 0.008 85);
+  --foreground: oklch(0.93 0.005 85);
+  --card: oklch(0.21 0.01 85);
+  --card-foreground: oklch(0.93 0.005 85);
+  --popover: oklch(0.23 0.01 85);
+  --popover-foreground: oklch(0.93 0.005 85);
+  --primary: oklch(0.72 0.09 148); /* Sage bright */
+  --primary-foreground: oklch(0.17 0.01 85);
+  --secondary: oklch(0.26 0.01 85);
+  --secondary-foreground: oklch(0.88 0.005 85);
+  --muted: oklch(0.24 0.01 85);
+  --muted-foreground: oklch(0.6 0.008 85);
+  --accent: oklch(0.27 0.015 148);
+  --accent-foreground: oklch(0.93 0.005 85);
   --destructive: oklch(0.62 0.19 25);
-  --border: oklch(1 0 0 / 9%);
-  --input: oklch(1 0 0 / 13%);
-  --ring: oklch(0.72 0.13 232);
-  --signal: oklch(0.72 0.13 232);
-  --signal-foreground: oklch(0.16 0.02 260);
-  --safe: oklch(0.74 0.14 156);
+  --border: oklch(0.93 0.005 85 / 10%);
+  --input: oklch(0.93 0.005 85 / 13%);
+  --ring: oklch(0.72 0.09 148);
+  --signal: oklch(0.72 0.09 148);
+  --signal-foreground: oklch(0.17 0.01 85);
+  --safe: oklch(0.74 0.12 152);
   --caution: oklch(0.79 0.14 78);
-  --chart-1: oklch(0.72 0.13 232);
-  --chart-2: oklch(0.74 0.14 156);
+  --chart-1: oklch(0.72 0.09 148);
+  --chart-2: oklch(0.74 0.12 152);
   --chart-3: oklch(0.79 0.14 78);
   --chart-4: oklch(0.62 0.19 25);
-  --chart-5: oklch(0.5 0.02 260);
-  --radius: 0.5rem;
-  --sidebar: oklch(0.185 0.013 260);
-  --sidebar-foreground: oklch(0.93 0.005 260);
-  --sidebar-primary: oklch(0.72 0.13 232);
-  --sidebar-primary-foreground: oklch(0.16 0.02 260);
-  --sidebar-accent: oklch(0.26 0.016 260);
-  --sidebar-accent-foreground: oklch(0.93 0.005 260);
-  --sidebar-border: oklch(1 0 0 / 9%);
-  --sidebar-ring: oklch(0.72 0.13 232);
+  --chart-5: oklch(0.5 0.01 85);
+  --sidebar: oklch(0.19 0.009 85);
+  --sidebar-foreground: oklch(0.93 0.005 85);
+  --sidebar-primary: oklch(0.72 0.09 148);
+  --sidebar-primary-foreground: oklch(0.17 0.01 85);
+  --sidebar-accent: oklch(0.26 0.012 148);
+  --sidebar-accent-foreground: oklch(0.93 0.005 85);
+  --sidebar-border: oklch(0.93 0.005 85 / 10%);
+  --sidebar-ring: oklch(0.72 0.09 148);
+
+  /* Zinc scale on warm ink */
+  --zinc-50: oklch(0.95 0.005 85);
+  --zinc-100: oklch(0.9 0.006 85);
+  --zinc-200: oklch(0.8 0.006 85);
+  --zinc-300: oklch(0.7 0.006 85);
+  --zinc-400: oklch(0.62 0.008 85);
+  --zinc-500: oklch(0.55 0.008 85);
+  --zinc-600: oklch(0.48 0.008 85);
+  --zinc-700: oklch(0.38 0.01 85);
+  --zinc-800: oklch(0.28 0.01 85);
+  --zinc-900: oklch(0.22 0.01 85);
+  --zinc-950: oklch(0.17 0.008 85);
 }
 
 @layer base {
@@ -112,38 +193,55 @@
   }
 }
 
-/* Accent themes — switched via data-accent on <html> */
-[data-accent='violet'] {
-  --signal: oklch(0.68 0.16 290);
-  --signal-foreground: oklch(0.98 0.01 290);
-  --primary: oklch(0.68 0.16 290);
-  --ring: oklch(0.68 0.16 290);
-  --sidebar-primary: oklch(0.68 0.16 290);
-  --sidebar-ring: oklch(0.68 0.16 290);
+/* Accent themes — switched via data-accent. Sage is the default identity,
+   so only the alternates need overrides. Values are theme-aware. */
+[data-accent='forest'] {
+  --signal: oklch(0.32 0.06 155);
+  --signal-foreground: oklch(0.98 0.004 85);
+  --primary: oklch(0.32 0.06 155);
+  --ring: oklch(0.32 0.06 155);
+  --sidebar-primary: oklch(0.32 0.06 155);
+  --sidebar-ring: oklch(0.32 0.06 155);
 }
-[data-accent='emerald'] {
-  --signal: oklch(0.72 0.15 160);
-  --signal-foreground: oklch(0.16 0.03 160);
-  --primary: oklch(0.72 0.15 160);
-  --ring: oklch(0.72 0.15 160);
-  --sidebar-primary: oklch(0.72 0.15 160);
-  --sidebar-ring: oklch(0.72 0.15 160);
+[data-theme='dark'][data-accent='forest'] {
+  --signal: oklch(0.64 0.08 152);
+  --signal-foreground: oklch(0.17 0.01 85);
+  --primary: oklch(0.64 0.08 152);
+  --ring: oklch(0.64 0.08 152);
+  --sidebar-primary: oklch(0.64 0.08 152);
+  --sidebar-ring: oklch(0.64 0.08 152);
 }
 [data-accent='amber'] {
-  --signal: oklch(0.78 0.15 75);
+  --signal: oklch(0.55 0.12 70);
+  --signal-foreground: oklch(0.98 0.004 85);
+  --primary: oklch(0.55 0.12 70);
+  --ring: oklch(0.55 0.12 70);
+  --sidebar-primary: oklch(0.55 0.12 70);
+  --sidebar-ring: oklch(0.55 0.12 70);
+}
+[data-theme='dark'][data-accent='amber'] {
+  --signal: oklch(0.79 0.14 78);
   --signal-foreground: oklch(0.2 0.04 75);
-  --primary: oklch(0.78 0.15 75);
-  --ring: oklch(0.78 0.15 75);
-  --sidebar-primary: oklch(0.78 0.15 75);
-  --sidebar-ring: oklch(0.78 0.15 75);
+  --primary: oklch(0.79 0.14 78);
+  --ring: oklch(0.79 0.14 78);
+  --sidebar-primary: oklch(0.79 0.14 78);
+  --sidebar-ring: oklch(0.79 0.14 78);
 }
 [data-accent='rose'] {
-  --signal: oklch(0.68 0.17 15);
-  --signal-foreground: oklch(0.98 0.01 15);
-  --primary: oklch(0.68 0.17 15);
-  --ring: oklch(0.68 0.17 15);
-  --sidebar-primary: oklch(0.68 0.17 15);
-  --sidebar-ring: oklch(0.68 0.17 15);
+  --signal: oklch(0.5 0.15 18);
+  --signal-foreground: oklch(0.98 0.004 85);
+  --primary: oklch(0.5 0.15 18);
+  --ring: oklch(0.5 0.15 18);
+  --sidebar-primary: oklch(0.5 0.15 18);
+  --sidebar-ring: oklch(0.5 0.15 18);
+}
+[data-theme='dark'][data-accent='rose'] {
+  --signal: oklch(0.68 0.16 18);
+  --signal-foreground: oklch(0.17 0.01 85);
+  --primary: oklch(0.68 0.16 18);
+  --ring: oklch(0.68 0.16 18);
+  --sidebar-primary: oklch(0.68 0.16 18);
+  --sidebar-ring: oklch(0.68 0.16 18);
 }
 
 /* Density */
@@ -156,78 +254,19 @@
   --density-gap: 1rem;
 }
 
-/* Light theme — same graphite/steel identity, inverted surfaces.
-   Semantic tokens flip here; the zinc remap below translates the
-   hard-coded dark zinc utilities used across components. */
-[data-theme='light'] {
-  color-scheme: light;
-  --background: oklch(0.98 0.005 260);
-  --foreground: oklch(0.15 0.01 260);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.15 0.01 260);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.15 0.01 260);
-  --primary: oklch(0.4 0.18 232);
-  --primary-foreground: oklch(0.98 0.01 260);
-  --secondary: oklch(0.9 0.01 260);
-  --secondary-foreground: oklch(0.2 0.01 260);
-  --muted: oklch(0.94 0.01 260);
-  --muted-foreground: oklch(0.4 0.01 260);
-  --accent: oklch(0.9 0.01 260);
-  --accent-foreground: oklch(0.15 0.01 260);
-  --destructive: oklch(0.45 0.18 25);
-  --border: oklch(0.2 0.01 260 / 20%);
-  --input: oklch(0.2 0.01 260 / 15%);
-  --ring: oklch(0.4 0.18 232);
-  --signal: oklch(0.4 0.18 232);
-  --signal-foreground: oklch(0.98 0.01 260);
-  --safe: oklch(0.4 0.15 156);
-  --caution: oklch(0.5 0.15 78);
-  --sidebar: oklch(0.94 0.01 260);
-  --sidebar-foreground: oklch(0.15 0.01 260);
-  --sidebar-primary: oklch(0.4 0.18 232);
-  --sidebar-primary-foreground: oklch(0.98 0.01 260);
-  --sidebar-accent: oklch(0.88 0.01 260);
-  --sidebar-accent-foreground: oklch(0.15 0.01 260);
-  --sidebar-border: oklch(0.2 0.01 260 / 20%);
-  --sidebar-ring: oklch(0.4 0.18 232);
-}
-
-/* Zinc remap for light mode: components use fixed dark zinc shades
-   (zinc-950/900/800 surfaces, zinc-100/50 text). Translate them to
-   light equivalents only under [data-theme='light']. */
-[data-theme='light'] .bg-zinc-950 { background-color: oklch(0.97 0.004 260); }
-[data-theme='light'] .bg-zinc-900 { background-color: oklch(1 0 0); }
-[data-theme='light'] .bg-zinc-900\/50 { background-color: oklch(0.22 0.012 260 / 4%); }
-[data-theme='light'] .bg-zinc-900\/60 { background-color: oklch(0.22 0.012 260 / 5%); }
-[data-theme='light'] .bg-zinc-800 { background-color: oklch(0.93 0.006 260); }
-[data-theme='light'] .bg-zinc-800\/40 { background-color: oklch(0.22 0.012 260 / 5%); }
-[data-theme='light'] .bg-zinc-800\/50 { background-color: oklch(0.22 0.012 260 / 6%); }
-[data-theme='light'] .bg-zinc-800\/80 { background-color: oklch(0.22 0.012 260 / 7%); }
-[data-theme='light'] .bg-zinc-100 { background-color: oklch(0.25 0.012 260); }
-[data-theme='light'] .text-zinc-50 { color: oklch(0.18 0.012 260); }
-[data-theme='light'] .text-zinc-100 { color: oklch(0.22 0.012 260); }
-[data-theme='light'] .text-zinc-200 { color: oklch(0.3 0.012 260); }
-[data-theme='light'] .text-zinc-300 { color: oklch(0.38 0.012 260); }
-[data-theme='light'] .text-zinc-400 { color: oklch(0.46 0.012 260); }
-[data-theme='light'] .text-zinc-500 { color: oklch(0.52 0.012 260); }
-[data-theme='light'] .text-zinc-600 { color: oklch(0.58 0.012 260); }
-[data-theme='light'] .text-zinc-900 { color: oklch(0.97 0.004 260); }
-[data-theme='light'] .ring-zinc-800 { --tw-ring-color: oklch(0.22 0.012 260 / 10%); }
-[data-theme='light'] .ring-zinc-700 { --tw-ring-color: oklch(0.22 0.012 260 / 16%); }
-[data-theme='light'] .ring-zinc-700\/80 { --tw-ring-color: oklch(0.22 0.012 260 / 14%); }
-[data-theme='light'] .ring-zinc-600 { --tw-ring-color: oklch(0.22 0.012 260 / 22%); }
-[data-theme='light'] .border-zinc-800 { border-color: oklch(0.22 0.012 260 / 10%); }
-[data-theme='light'] .border-zinc-700 { border-color: oklch(0.22 0.012 260 / 16%); }
-[data-theme='light'] .hover\:bg-zinc-800:hover { background-color: oklch(0.92 0.006 260); }
-[data-theme='light'] .hover\:bg-zinc-700:hover { background-color: oklch(0.88 0.006 260); }
-[data-theme='light'] .hover\:text-zinc-100:hover { color: oklch(0.18 0.012 260); }
-[data-theme='light'] .hover\:text-zinc-200:hover { color: oklch(0.25 0.012 260); }
-[data-theme='light'] .hover\:text-zinc-300:hover { color: oklch(0.32 0.012 260); }
-[data-theme='light'] .hover\:text-white:hover { color: oklch(0.15 0.012 260); }
-[data-theme='light'] .bg-white { background-color: oklch(0.25 0.012 260); }
-[data-theme='light'] .hover\:bg-white:hover { background-color: oklch(0.18 0.012 260); }
-[data-theme='light'] .text-white { color: oklch(0.98 0.002 260); }
-[data-theme='light'] .placeholder\:text-zinc-500::placeholder { color: oklch(0.6 0.012 260); }
-[data-theme='light'] .placeholder\:text-zinc-600::placeholder { color: oklch(0.62 0.012 260); }
-[data-theme='light'] .divide-zinc-800 > :not([hidden]) ~ :not([hidden]) { border-color: oklch(0.22 0.012 260 / 10%); }
+/* Status colors authored for dark surfaces need darker equivalents on paper.
+   White is kept for text on signal buttons but darkened for knobs/hovers. */
+[data-theme='light'] .text-emerald-300 { color: oklch(0.45 0.1 155); }
+[data-theme='light'] .text-emerald-400 { color: oklch(0.5 0.12 155); }
+[data-theme='light'] .text-amber-300 { color: oklch(0.55 0.12 70); }
+[data-theme='light'] .text-amber-400 { color: oklch(0.6 0.13 70); }
+[data-theme='light'] .text-amber-200 { color: oklch(0.5 0.1 70); }
+[data-theme='light'] .text-amber-100 { color: oklch(0.45 0.09 70); }
+[data-theme='light'] .text-red-300 { color: oklch(0.5 0.15 25); }
+[data-theme='light'] .text-red-200 { color: oklch(0.45 0.14 25); }
+[data-theme='light'] .hover\:text-red-300:hover { color: oklch(0.45 0.15 25); }
+[data-theme='light'] .text-rose-400 { color: oklch(0.55 0.16 15); }
+[data-theme='light'] .text-rose-500 { color: oklch(0.5 0.17 15); }
+[data-theme='light'] .bg-white { background-color: oklch(0.26 0.015 85); }
+[data-theme='light'] .hover\:bg-white:hover { background-color: oklch(0.18 0.015 85); }
+[data-theme='light'] .hover\:text-white:hover { color: oklch(0.24 0.015 85); }

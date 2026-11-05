@@ -21,11 +21,10 @@ const inputCls =
 const labelCls = 'mb-1 block text-[11px] font-medium text-muted-foreground'
 
 const ACCENTS: { key: string; label: string; swatch: string }[] = [
-  { key: 'blue', label: 'Xanh dương', swatch: '#5b9bd5' },
-  { key: 'violet', label: 'Tím', swatch: '#9b7ed9' },
-  { key: 'emerald', label: 'Ngọc lục', swatch: '#4caf7d' },
-  { key: 'amber', label: 'Hổ phách', swatch: '#d9a441' },
-  { key: 'rose', label: 'Hồng', swatch: '#d96a7e' },
+  { key: 'sage', label: 'Sage', swatch: '#7ba889' },
+  { key: 'forest', label: 'Forest', swatch: '#3d6b4f' },
+  { key: 'amber', label: 'Hổ phách', swatch: '#c98f3d' },
+  { key: 'rose', label: 'Hồng đất', swatch: '#c26a72' },
 ]
 
 export function DataManager({ onClose }: { onClose?: () => void }) {

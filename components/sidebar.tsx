@@ -7,11 +7,11 @@ import { useWorkOS } from '@/lib/store'
 import { isOverdue } from '@/lib/copilot-engine'
 
 const NAV: { key: ViewKey; label: string; icon: React.ComponentType<{ className?: string }>; feature?: string }[] = [
-  { key: 'copilot', label: 'Work Copilot', icon: Bot },
+  { key: 'copilot', label: 'AI Copilot', icon: Bot },
   { key: 'my-work', label: 'My Work', icon: ListTodo, feature: 'myWork' },
-  { key: 'company', label: 'Company Dashboard', icon: Building2, feature: 'company' },
-  { key: 'projects', label: 'Projects', icon: FolderKanban, feature: 'projects' },
-  { key: 'members', label: 'Nhân sự', icon: Users, feature: 'projects' },
+  { key: 'company', label: 'Team Pulse', icon: Building2, feature: 'company' },
+  { key: 'projects', label: 'Work in Progress', icon: FolderKanban, feature: 'projects' },
+  { key: 'members', label: 'People', icon: Users, feature: 'projects' },
   { key: 'workload', label: 'Team Workload', icon: Users, feature: 'workload' },
   { key: 'activity', label: 'Activity & Decisions', icon: ScrollText, feature: 'activity' },
 ]
@@ -27,10 +27,10 @@ export function Sidebar({ view, onView, onOpenSettings }: { view: ViewKey; onVie
     <aside className="hidden shrink-0 flex-col border-r border-zinc-800/80 md:flex" style={{ width: 'var(--sidebar-width, 15rem)', backgroundColor: 'var(--sidebar)' }}>
       <div className="px-5 pb-4 pt-5">
         <div className="flex items-center gap-2.5">
-          <span className="flex size-8 items-center justify-center rounded-lg bg-zinc-100 text-[13px] font-bold text-zinc-900">{(ui.appName || "T").trim().charAt(0).toUpperCase()}</span>
+          <span className="flex size-8 items-center justify-center rounded-lg bg-signal text-[13px] font-bold text-signal-foreground">{(ui.appName || "T").trim().charAt(0).toUpperCase()}</span>
           <div className="min-w-0">
             <div className="truncate text-[14px] font-semibold leading-tight text-zinc-50">{ui.appName}</div>
-            <div className="truncate text-xs leading-tight text-zinc-500">Không gian làm việc</div>
+            <div className="truncate text-xs leading-tight text-zinc-500">Self-Adaptive Workspace</div>
           </div>
         </div>
       </div>
@@ -42,7 +42,7 @@ export function Sidebar({ view, onView, onOpenSettings }: { view: ViewKey; onVie
             onClick={() => onView(key)}
             className={cn(
               'flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-[13px] font-medium transition-colors',
-              view === key ? 'bg-zinc-800 text-zinc-50' : 'text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-100',
+              view === key ? 'bg-signal/12 text-foreground' : 'text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-100',
             )}
           >
             <Icon className="size-4 shrink-0" />

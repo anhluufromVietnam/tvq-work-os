@@ -21,9 +21,9 @@ import { designToStyle, sanitizeCustomCss } from '@/lib/design'
 
 const TITLES: Record<Exclude<ViewKey, 'copilot'>, { label: string; title: string }> = {
   'my-work': { label: 'Việc của bạn, ưu tiên theo hạn và mức độ quan trọng', title: 'My Work' },
-  company: { label: 'Tổng quan sức khoẻ dự án, tải việc và các điểm cần quyết định', title: 'Company Dashboard' },
-  projects: { label: 'Theo dõi tiến độ, thành viên và việc đang mở của từng dự án', title: 'Projects' },
-  members: { label: 'Quản lý nhân sự, thù lao và định danh', title: 'Member Management' },
+  company: { label: 'Nhịp độ tổ chức: sức khoẻ dự án, tải việc và điểm cần quyết định', title: 'Team Pulse' },
+  projects: { label: 'Toàn bộ hoạt động công việc: tiến độ, thành viên và việc đang mở', title: 'Work in Progress' },
+  members: { label: 'Con người: vai trò, kỹ năng, khả năng và sự kết nối', title: 'People' },
   workload: { label: 'Ai đang quá tải, ai còn khả năng nhận việc', title: 'Team Workload' },
   activity: { label: 'Quyết định chờ duyệt và nhật ký thay đổi của hệ thống', title: 'Activity & Decisions' },
 }
@@ -71,28 +71,46 @@ function Shell() {
                 onClick={() => setCopilotOpen(true)}
                 className="mt-5 rounded-md bg-signal px-5 py-2.5 text-sm font-medium text-signal-foreground transition-opacity hover:opacity-90"
               >
-                Mở Work Copilot
+                Push the Frontier
               </button>
             </div>
 
             <div className="hidden max-w-xl lg:block">
-              <div className="text-xs font-medium text-zinc-500">Trợ lý điều hành</div>
+              <div className="os-label">The Self-Adaptive AI Workspace</div>
               <h1 className="mt-2 text-3xl font-semibold tracking-tight text-balance">{ui.homeHeadline}</h1>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                Tạo nhân viên, lập dự án, gán người, tạo việc, đổi giao diện hay mở màn hình — chỉ cần nói. Việc nhạy cảm vẫn cần bạn duyệt, việc thường ngày có thể chạy ngay.
+                Nền tảng AI-native nơi AI hiểu con người, công việc và tổ chức — tự điều chỉnh không gian làm việc theo nhu cầu của bạn. Technology serves people.
               </p>
+
+              <div className="mt-5 flex flex-wrap gap-x-5 gap-y-1.5 text-[13px] font-medium text-muted-foreground">
+                <span className="inline-flex items-center gap-1.5"><span className="size-1.5 rounded-full bg-signal" />Human-centered AI</span>
+                <span className="inline-flex items-center gap-1.5"><span className="size-1.5 rounded-full bg-signal" />Adaptive Workspace</span>
+                <span className="inline-flex items-center gap-1.5"><span className="size-1.5 rounded-full bg-signal" />Work-Life Balance</span>
+              </div>
 
               <div className="mt-8 grid gap-3 sm:grid-cols-2">
                 <div className="rounded-lg border bg-card p-4 text-left">
-                  <div className="text-[13px] font-semibold text-zinc-100">Ra lệnh trực tiếp</div>
+                  <div className="text-[13px] font-semibold text-zinc-100">People</div>
                   <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
-                    “Thêm Lan làm Frontend, tạo dự án App Tay Vịn, gán Lan vào dự án và tạo task thiết kế màn hình chính.”
+                    Hiểu con người: hồ sơ, vai trò, kỹ năng, khối lượng công việc và sự phối hợp giữa các thành viên.
                   </p>
                 </div>
                 <div className="rounded-lg border bg-card p-4 text-left">
-                  <div className="text-[13px] font-semibold text-zinc-100">Phân tích điều hành</div>
+                  <div className="text-[13px] font-semibold text-zinc-100">Work in Progress</div>
                   <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
-                    Phân tích toàn công ty, tách việc bạn phải tự quyết / có thể ủy quyền / được phép tự xử lý, rồi đề xuất hành động.
+                    Projects, tasks, timeline — giao việc, theo dõi trạng thái và phát hiện điểm nghẽn.
+                  </p>
+                </div>
+                <div className="rounded-lg border bg-card p-4 text-left">
+                  <div className="text-[13px] font-semibold text-zinc-100">Team Pulse</div>
+                  <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+                    Nhịp độ tổ chức: workload, project health, hoạt động nhóm và đề xuất điều chỉnh nguồn lực.
+                  </p>
+                </div>
+                <div className="rounded-lg border bg-card p-4 text-left">
+                  <div className="text-[13px] font-semibold text-zinc-100">AI Copilot</div>
+                  <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+                    Ra lệnh bằng ngôn ngữ tự nhiên — AI tạo dashboard, phân công, thực thi workflow trong phạm vi được cấp quyền.
                   </p>
                 </div>
               </div>

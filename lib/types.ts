@@ -168,7 +168,7 @@ export interface WorkState {
   personalViews: PersonalView[]
 }
 
-export type AccentColor = 'blue' | 'violet' | 'emerald' | 'amber' | 'rose'
+export type AccentColor = 'sage' | 'forest' | 'amber' | 'rose'
 export type Density = 'comfortable' | 'compact'
 export type ProjectLayout = 'grid' | 'list' | 'board'
 export type ThemeMode = 'dark' | 'light'
@@ -184,6 +184,8 @@ export interface CustomSection {
 }
 
 export interface DesignPrefs {
+  /** Bump when the built-in theme system changes so stale freeform overrides get cleared once. */
+  version?: number
   accentHex?: string
   backgroundHex?: string
   surfaceHex?: string
@@ -224,8 +226,8 @@ export const DEFAULT_FEATURES: Record<FeatureKey, boolean> = {
 }
 
 export const DEFAULT_UI: UIPrefs = {
-  theme: 'dark',
-  accent: 'blue',
+  theme: 'light',
+  accent: 'sage',
   density: 'comfortable',
   projectLayout: 'grid',
   copilotWidth: 420,
@@ -233,8 +235,8 @@ export const DEFAULT_UI: UIPrefs = {
   autoExecute: false,
   features: DEFAULT_FEATURES,
   sections: [],
-  appName: 'TVQ Work',
-  homeHeadline: 'Nói việc cần làm — Copilot thực hiện ngay trong hệ thống',
+  appName: 'TVQ Work Copilot',
+  homeHeadline: 'Work smarter. Live healthier. Grow together.',
   design: {},
 }
 

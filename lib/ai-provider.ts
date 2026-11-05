@@ -77,6 +77,15 @@ export function maskKey(key: string): string {
   return `••••${key.slice(-4)}`
 }
 
+// Accept a host root (https://host), a /v1 prefix, or a full
+// /chat/completions URL — always produce the chat endpoint.
+export function normalizeChatUrl(raw: string): string {
+  const url = raw.trim().replace(/\/+$/, '')
+  if (/\/chat\/completions$/i.test(url)) return url
+  if (/\/v1$/i.test(url)) return `${url}/chat/completions`
+  return `${url}/v1/chat/completions`
+}
+
 interface ChatMessage {
   role: 'user' | 'assistant' | 'system'
   content: string
@@ -92,9 +101,10 @@ export async function callChatCompletions(
   if (!config.model) throw new Error('AI model chưa được cấu hình')
 
   const label = PROVIDER_META[config.provider].label
+  const endpoint = normalizeChatUrl(config.baseUrl)
   console.log(`[API] Calling ${label} (${config.model})...`)
 
-  const response = await fetch(config.baseUrl, {
+  const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -7,14 +7,14 @@ const inter = Inter({ subsets: ['latin', 'vietnamese'], variable: '--font-inter'
 const geistMono = Geist_Mono({ subsets: ['latin', 'latin-ext'], variable: '--font-geist-mono' })
 
 export const metadata: Metadata = {
-  title: 'TVQ Work OS — Work Copilot',
+  title: 'TVQ Work Copilot — The Self-Adaptive AI Workspace',
   description:
-    'Trợ lý điều hành tích hợp vào TVQ Work OS: Command Mode, Executive Copilot, xem trước thay đổi và phân quyền L1–L3.',
+    'Work smarter. Live healthier. Grow together. AI-native workspace: People, Work in Progress, Team Pulse và AI Copilot với phân quyền L1–L3.',
 }
 
 export const viewport: Viewport = {
-  colorScheme: 'dark',
-  themeColor: [{ media: '(prefers-color-scheme: dark)', color: '#101319' }],
+  colorScheme: 'light',
+  themeColor: [{ media: '(prefers-color-scheme: light)', color: '#faf9f5' }],
 }
 
 export default function RootLayout({
@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="vi" className={`dark bg-background ${inter.variable} ${geistMono.variable}`}>
+    <html lang="vi" className={`bg-background ${inter.variable} ${geistMono.variable}`}>
       <body className="font-sans antialiased">{children}</body>
       {process.env.NODE_ENV === 'production' && <Analytics />}
     </html>

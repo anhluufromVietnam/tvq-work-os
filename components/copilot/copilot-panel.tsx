@@ -102,7 +102,7 @@ export function CopilotPanel({ onClose, onNavigate }: { onClose?: () => void; on
       if (action.type === 'set_ui' && action.payload) {
         const p = action.payload as Record<string, unknown>
         const patch: Record<string, unknown> = {}
-        if (p.accent) patch.accent = p.accent
+        if (p.accent && ['sage', 'forest', 'amber', 'rose'].includes(String(p.accent))) patch.accent = p.accent
         if (p.density) patch.density = p.density
         if (p.projectLayout) patch.projectLayout = p.projectLayout
         if (p.copilotWidth) patch.copilotWidth = Number(p.copilotWidth)

@@ -16,3 +16,7 @@ node_modules
 .DS_Store
 data/
 cookies.txt
+
+# Generated caches
+tsconfig.tsbuildinfo
+.impeccable/

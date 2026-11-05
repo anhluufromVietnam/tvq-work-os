@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { buildSeed, FOUNDER_ID } from './seed'
-import type { AuditEntry, Decision, Member, Plan, Project, Task, TaskAttachment, UIPrefs, WorkState } from './types'
+import type { AccentColor, AuditEntry, Decision, Member, Plan, Project, Task, TaskAttachment, UIPrefs, WorkState } from './types'
 import { DEFAULT_FEATURES, DEFAULT_UI } from './types'
 
 export type Role = 'admin' | 'manager' | 'member'
@@ -73,13 +73,28 @@ function normalizeState(parsed: WorkState): WorkState {
 }
 
 function normalizeUI(parsed: Partial<UIPrefs>): UIPrefs {
-  return {
+  const ui: UIPrefs = {
     ...DEFAULT_UI,
     ...parsed,
     features: { ...DEFAULT_FEATURES, ...(parsed.features ?? {}) },
     sections: parsed.sections ?? [],
     design: parsed.design ?? {},
   }
+  // One-time migration: legacy accent palette (blue/violet/emerald) predates the
+  // natural Paper/Stone/Sage/Forest/Ink identity — adopt it, including light theme,
+  // and drop stale freeform design overrides (old hex tokens / custom CSS) that
+  // would fight the new theme system.
+  const legacyAccent = { blue: 'sage', violet: 'sage', emerald: 'forest' } as const
+  if ((legacyAccent as Record<string, AccentColor>)[ui.accent]) {
+    ui.accent = legacyAccent[ui.accent as keyof typeof legacyAccent]
+    ui.theme = 'light'
+    ui.design = {}
+  }
+  // Theme-system v2 (Paper/Sage redesign): clear pre-redesign freeform overrides once.
+  if (ui.design.version !== 2) {
+    ui.design = { version: 2 }
+  }
+  return ui
 }
 
 // Recompute each member's load from their open tasks (priority weight: cao=3, tb=2, thấp=1)
