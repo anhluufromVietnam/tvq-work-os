@@ -1,13 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { currentUser } from '@/lib/auth-server'
-import { redactStateForRole } from '@/lib/db'
-
-// AWS Bedrock API configuration
-const AWS_REGION = process.env.AWS_REGION || 'us-east-1'
-const AWS_BEARER_KEY = process.env.AWS_BEARER_KEY
-
-// Model ID for zai.glm-5
-const MODEL_ID = 'zai.glm-5'
+import { getAIProvider, redactStateForRole } from '@/lib/db'
+import { callChatCompletions, resolveAIProvider } from '@/lib/ai-provider'
 
 interface Message {
   role: 'user' | 'assistant' | 'system'
@@ -23,67 +17,16 @@ interface CopilotRequest {
   }
 }
 
-async function callBedrock(messages: Message[], systemPrompt: string): Promise<string> {
-  if (!AWS_BEARER_KEY) {
-    throw new Error('AWS_BEARER_KEY not configured')
-  }
-
-  console.log('[API] Calling Bedrock zai.glm-5...')
-  
-  // Use bedrock-mantle endpoint for API key authentication
-  const endpoint = `https://bedrock-mantle.${AWS_REGION}.api.aws/v1/chat/completions`
-  
-  // Format messages for OpenAI-compatible API
-  const formattedMessages = [
-    { role: 'system', content: systemPrompt },
-    ...messages.map(m => ({
-      role: m.role === 'assistant' ? 'assistant' : 'user',
-      content: m.content
-    }))
-  ]
-
-  const requestBody = {
-    model: MODEL_ID,
-    messages: formattedMessages,
-    max_tokens: 2048,
-    temperature: 0.7,
-  }
-
-  console.log('[API] Request:', JSON.stringify(requestBody).substring(0, 200))
-
-  try {
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${AWS_BEARER_KEY}`,
-      },
-      body: JSON.stringify(requestBody),
-    })
-
-    console.log('[API] Response status:', response.status)
-
-    if (!response.ok) {
-      const errorText = await response.text()
-      console.error('[API] Error:', response.status, errorText)
-      throw new Error(`Bedrock API error: ${response.status} - ${errorText}`)
-    }
-
-    const data = await response.json()
-    console.log('[API] Response:', JSON.stringify(data).substring(0, 300))
-
-    // Extract response from OpenAI-compatible format
-    const content = data.choices?.[0]?.message?.content || data.content || ''
-    
-    if (!content) {
-      throw new Error('No content in response')
-    }
-
-    return content
-  } catch (error) {
-    console.error('[API] Bedrock call failed:', error)
-    throw error
-  }
+async function callAI(messages: Message[], systemPrompt: string): Promise<{ content: string; model: string; provider: string }> {
+  const stored = getAIProvider()
+  const config = resolveAIProvider({
+    provider: stored.provider,
+    baseUrl: stored.baseUrl,
+    apiKey: stored.apiKey,
+    model: stored.model,
+  })
+  const content = await callChatCompletions(config, messages, systemPrompt)
+  return { content, model: config.model, provider: config.provider }
 }
 
 const SYSTEM_PROMPT = `Bạn là TVQ Work Copilot — trợ lý điều hành thông minh tích hợp vào TVQ Work OS.
@@ -257,12 +200,13 @@ ${state.decisions.map(d => `- ID: ${d.id} | ${d.title}`).join('\n') || 'Không c
 QUAN TRỌNG: Khi tạo action, PHẢI dùng ID thật từ danh sách trên. Ví dụ: assigneeId: "m1", projectId: "p1"`
     }
 
-    const response = await callBedrock(messages, fullSystemPrompt)
+    const { content, model, provider } = await callAI(messages, fullSystemPrompt)
 
     return NextResponse.json({
       success: true,
-      content: response,
-      model: MODEL_ID,
+      content,
+      model,
+      provider,
       timestamp: new Date().toISOString(),
     })
   } catch (error) {
@@ -275,13 +219,21 @@ QUAN TRỌNG: Khi tạo action, PHẢI dùng ID thật từ danh sách trên. V�
 }
 
 export async function GET() {
-  const hasBearerCreds = !!AWS_BEARER_KEY
-  
+  const stored = getAIProvider()
+  const config = resolveAIProvider({
+    provider: stored.provider,
+    baseUrl: stored.baseUrl,
+    apiKey: stored.apiKey,
+    model: stored.model,
+  })
+
   return NextResponse.json({
     status: 'ok',
-    model: MODEL_ID,
-    awsConfigured: hasBearerCreds,
-    authType: hasBearerCreds ? 'bearer' : 'none',
-    endpoint: `https://bedrock-mantle.${AWS_REGION}.api.aws/v1/chat/completions`,
+    provider: config.provider,
+    model: config.model,
+    baseUrl: config.baseUrl || null,
+    configured: Boolean(config.apiKey && config.baseUrl && config.model),
+    hasKey: Boolean(config.apiKey),
+    keySource: stored.apiKey ? 'database' : process.env.AI_API_KEY ? 'env' : config.provider === 'bedrock' && process.env.AWS_BEARER_KEY ? 'env' : 'none',
   })
 }

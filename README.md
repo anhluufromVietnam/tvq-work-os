@@ -1,17 +1,15 @@
-# TVQ Work Copilot - AWS zai.glm-5 Integration
+# TVQ Work OS — AI Work Operating System
 
-Ứng dụng Work Copilot tích hợp AWS Bedrock với model zai.glm-5.
+Hệ điều hành công việc với AI Copilot điều khiển bằng ngôn ngữ tự nhiên.
 
 ## ✅ Status: HOẠT ĐỘNG
-
-API đã kết nối thành công với AWS Bedrock và trả về dữ liệu thật từ zai.glm-5 model.
 
 ## Tính năng
 
 - **Command Mode**: Giao việc bằng ngôn ngữ tự nhiên
 - **Executive Copilot**: Phân tích tình hình toàn công ty
-- **AI Integration**: Sử dụng zai.glm-5 model qua AWS Bedrock Mantle API
-- **Permission Engine**: Hệ thống phân quyền L1-L3
+- **AI Provider cấu hình được**: AWS Bedrock (zai.glm-5) / Muse Spark / Custom OpenAI-compatible — đổi URL, key, model ngay trong app
+- **Permission Engine**: Hệ thống phân quyền L1-L3 + RBAC (admin/manager/member)
 - **Audit Logging**: Ghi nhận mọi thay đổi
 
 ## Cài đặt
@@ -22,11 +20,19 @@ API đã kết nối thành công với AWS Bedrock và trả về dữ liệu t
 pnpm install
 ```
 
-### 2. Cấu hình AWS credentials
+### 2. Cấu hình AI Provider (2 cách)
 
-Tạo file `.env.local`:
+**Cách A — trong app (khuyến nghị, chỉ Admin):**
+Mở app → Cài đặt → Cấu hình AI Provider → chọn provider (Bedrock / Muse Spark / Custom), điền Base URL, API Key, tên Model → Lưu.
+
+**Cách B — qua file `.env.local`:**
 
 ```env
+AI_PROVIDER=bedrock
+AI_BASE_URL=
+AI_API_KEY=
+AI_MODEL=
+# Legacy Bedrock:
 AWS_REGION=us-east-1
 AWS_BEARER_KEY=ABSK...your_key_here
 ```
@@ -39,11 +45,13 @@ pnpm dev
 
 Mở http://localhost:3000
 
+Tài khoản mặc định: `admin@tvq.local / admin123`, `manager@tvq.local / manager123`, `member@tvq.local / member123`.
+
 ## API Endpoints
 
 ### POST /api/copilot
 
-Gọi zai.glm-5 model với messages và context.
+Gọi AI provider đã cấu hình với messages và context.
 
 **Request:**
 ```json
@@ -62,52 +70,48 @@ Gọi zai.glm-5 model với messages và context.
 {
   "success": true,
   "content": "Phân tích tình hình toàn công ty...",
-  "model": "zai.glm-5",
+  "model": "muse-spark",
+  "provider": "muse-spark",
   "timestamp": "2026-10-22T10:29:42.574Z"
 }
 ```
 
 ### GET /api/copilot
 
-Kiểm tra trạng thái API.
+Kiểm tra trạng thái provider hiện tại (provider, model, đã cấu hình key hay chưa).
+
+### GET / PUT /api/ai-provider (chỉ Admin)
+
+Xem / lưu cấu hình AI provider (provider, baseUrl, model; key được mask, để trống để giữ nguyên).
 
 ## Cấu trúc dự án
 
 ```
 ├── app/
-│   ├── api/copilot/route.ts    # API route cho zai.glm-5
-│   ├── layout.tsx              # Root layout
-│   └── page.tsx                # Main page
+│   ├── api/copilot/route.ts      # API route gọi AI provider
+│   ├── api/ai-provider/route.ts  # API lưu cấu hình provider (admin)
+│   ├── layout.tsx                # Root layout
+│   └── page.tsx                  # Main page
 ├── components/
+│   ├── ai-provider-panel.tsx     # Panel cấu hình provider
 │   └── copilot/
-│       ├── copilot-panel.tsx   # Copilot UI panel
-│       ├── plan-card.tsx       # Plan approval card
-│       └── analysis-card.tsx   # Analysis display card
+│       ├── copilot-panel.tsx     # Copilot UI panel
+│       ├── plan-card.tsx         # Plan approval card
+│       └── analysis-card.tsx     # Analysis display card
 ├── lib/
-│   ├── copilot-ai.ts          # AI integration logic
-│   ├── copilot-engine.ts      # Local engine (fallback)
-│   ├── store.tsx              # State management
-│   └── types.ts               # TypeScript types
-└── .env.local                 # AWS credentials
+│   ├── ai-provider.ts           # Resolve provider + gọi chat/completions
+│   ├── copilot-ai.ts            # AI integration logic
+│   ├── copilot-engine.ts        # Local engine (fallback)
+│   ├── store.tsx                # State management
+│   └── types.ts                 # TypeScript types
+└── .env.local                   # AI credentials (không commit)
 ```
 
-## AWS Configuration
+## AI Provider
 
-### ABSK Key Format
+Mặc định: **AWS Bedrock** (`zai.glm-5`) qua endpoint `https://bedrock-mantle.{region}.api.aws/v1/chat/completions` với ABSK Bearer Key.
 
-Key bắt đầu bằng `ABSK` - AWS Bearer Session Key cho Bedrock API.
-
-### Endpoint
-
-```
-https://bedrock-mantle.{region}.api.aws/v1/chat/completions
-```
-
-### Model ID
-
-```
-zai.glm-5
-```
+Đổi sang **Muse Spark** hoặc endpoint **Custom** tương thích OpenAI chat/completions bất cứ lúc nào trong Cài đặt — không cần sửa code hay restart server.
 
 ## License
 

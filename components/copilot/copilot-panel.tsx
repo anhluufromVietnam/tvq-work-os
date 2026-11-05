@@ -36,6 +36,7 @@ const VIEW_LABELS: Record<ViewKey, string> = {
   'my-work': 'My Work',
   company: 'Company Dashboard',
   projects: 'Projects',
+  members: 'Nhân sự',
   workload: 'Team Workload',
   activity: 'Activity & Decisions',
 }
@@ -50,6 +51,7 @@ export function CopilotPanel({ onClose, onNavigate }: { onClose?: () => void; on
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [useAI, setUseAI] = useState(true)
+  const [aiModel, setAiModel] = useState('')
   const [msgs, setMsgs] = useState<Msg[]>([
     {
       id: uid(),
@@ -63,6 +65,15 @@ export function CopilotPanel({ onClose, onNavigate }: { onClose?: () => void; on
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
   }, [msgs])
+
+  useEffect(() => {
+    fetch('/api/copilot')
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.model) setAiModel(String(d.model))
+      })
+      .catch(() => {})
+  }, [])
 
   function applyUiAndNavigate(plan: Plan) {
     for (const action of plan.actions) {
@@ -247,7 +258,7 @@ export function CopilotPanel({ onClose, onNavigate }: { onClose?: () => void; on
 
       {/* Toggles: AI + Auto-execute */}
       <div className="flex items-center justify-between border-b px-4 py-2">
-        <span className="text-xs text-muted-foreground">AI (zai.glm-5)</span>
+        <span className="text-xs text-muted-foreground">AI{aiModel ? ` (${aiModel})` : ''}</span>
         <button
           onClick={() => {
             setUseAI(!useAI)

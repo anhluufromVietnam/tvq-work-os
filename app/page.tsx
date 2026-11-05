@@ -6,7 +6,7 @@ import { WorkOSProvider, useWorkOS } from '@/lib/store'
 import type { ViewKey } from '@/lib/types'
 import { Sidebar } from '@/components/sidebar'
 import { CopilotPanel } from '@/components/copilot/copilot-panel'
-import { AWSConfigPanel } from '@/components/aws-config-panel'
+import { AIProviderPanel } from '@/components/ai-provider-panel'
 import { DataManager } from '@/components/data-manager'
 import { MyWork } from '@/components/views/my-work'
 import { CompanyDashboard } from '@/components/views/company-dashboard'
@@ -115,7 +115,7 @@ function Shell() {
                   className="inline-flex items-center gap-2 rounded-md border px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                 >
                   <Settings className="size-4" />
-                  Cấu hình AWS Bedrock
+                  Cấu hình AI Provider
                 </button>
                 <button
                   onClick={() => setShowData(!showData)}
@@ -127,7 +127,7 @@ function Shell() {
               </div>
               {showConfig && (
                 <div className="mt-3">
-                  <AWSConfigPanel />
+                  <AIProviderPanel />
                 </div>
               )}
               {showData && (
@@ -171,7 +171,7 @@ function Shell() {
             </div>
             <div className="space-y-4 p-4">
               <DataManager />
-              <AWSConfigPanel />
+              <AIProviderPanel />
             </div>
           </div>
         </div>

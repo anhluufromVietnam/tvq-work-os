@@ -40,6 +40,14 @@ db.exec(`
     user_id TEXT NOT NULL,
     expires_at TEXT NOT NULL
   );
+  CREATE TABLE IF NOT EXISTS ai_provider (
+    id INTEGER PRIMARY KEY CHECK (id = 1),
+    provider TEXT,
+    base_url TEXT,
+    api_key TEXT,
+    model TEXT,
+    updated_at TEXT NOT NULL
+  );
 `)
 
 function hashPassword(password: string): string {
@@ -181,4 +189,28 @@ export function canEditFinance(role: Role): boolean {
 
 export function canWrite(role: Role): boolean {
   return role === 'admin' || role === 'manager'
+}
+
+export interface AIProviderRow {
+  provider: string | null
+  baseUrl: string | null
+  apiKey: string | null
+  model: string | null
+}
+
+export function getAIProvider(): AIProviderRow {
+  const row = db.prepare('SELECT provider, base_url, api_key, model FROM ai_provider WHERE id = 1').get() as
+    | { provider: string | null; base_url: string | null; api_key: string | null; model: string | null }
+    | undefined
+  if (!row) return { provider: null, baseUrl: null, apiKey: null, model: null }
+  return { provider: row.provider, baseUrl: row.base_url, apiKey: row.api_key, model: row.model }
+}
+
+export function saveAIProvider(input: { provider: string; baseUrl: string; apiKey?: string; model: string }): AIProviderRow {
+  const current = getAIProvider()
+  const apiKey = input.apiKey !== undefined && input.apiKey !== '' ? input.apiKey : current.apiKey
+  db.prepare(
+    'INSERT INTO ai_provider (id, provider, base_url, api_key, model, updated_at) VALUES (1, ?, ?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET provider = excluded.provider, base_url = excluded.base_url, api_key = excluded.api_key, model = excluded.model, updated_at = excluded.updated_at',
+  ).run(input.provider, input.baseUrl, apiKey, input.model, new Date().toISOString())
+  return getAIProvider()
 }
